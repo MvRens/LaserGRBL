@@ -177,6 +177,7 @@ namespace LaserGRBL
 		public delegate void dlgOnMachineStatus();
 		public delegate void dlgOnOverrideChange();
 		public delegate void dlgOnLoopCountChange(decimal current);
+        public delegate void dlgOnJogStepChange(decimal current);
 
 		public event dlgIssueDetector IssueDetected;
 		public event dlgOnMachineStatus MachineStatusChanged;
@@ -184,6 +185,7 @@ namespace LaserGRBL
 		public event GrblFile.OnFileLoadedDlg OnFileLoaded;
 		public event dlgOnOverrideChange OnOverrideChange;
 		public event dlgOnLoopCountChange OnLoopCountChange;
+        public event dlgOnJogStepChange OnJogStepChange;
 
 		private System.Windows.Forms.Control syncro;
 		private ComWrapper.IComWrapper com;
@@ -221,6 +223,7 @@ namespace LaserGRBL
 		private int mTarOvPower;
 
 		private decimal mLoopCount = 1;
+        private decimal mJogStep;
 
 		private Tools.PeriodicEventTimer QueryTimer;
 
@@ -1755,7 +1758,8 @@ namespace LaserGRBL
 
 		public int JogSpeed { get; set; }
 
-		public decimal JogStep { get; set; }
+        public decimal JogStep
+        { get { return mJogStep; } set { mJogStep = value; if (OnJogStepChange != null) OnJogStepChange(mJogStep); } }
 
 		public bool SuspendHK { get; set; }
 

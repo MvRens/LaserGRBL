@@ -30,6 +30,8 @@ namespace LaserGRBL
 
 			TbSpeed_ValueChanged(null, null); //set tooltip
 			TbStep_ValueChanged(null, null); //set tooltip
+
+            Core.OnJogStepChange += Core_OnJogStepChange;
 		}
 
 		private void OnJogButtonMouseDown(object sender, MouseEventArgs e)
@@ -87,6 +89,12 @@ namespace LaserGRBL
 			}
 		}
 
+
+        private void Core_OnJogStepChange(decimal current)
+        {
+            if (current != TrackbarToJogStep(TbStep.Value))
+                TbStep.Value = JogStepToTrackbar(current);
+        }
 
         // Trackbar is still an integer value, so the first 9 values will be 0.1 to 0.9,
         // 10 and above will be 1 to 200
