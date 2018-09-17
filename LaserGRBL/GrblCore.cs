@@ -998,23 +998,24 @@ namespace LaserGRBL
 				decimal speed = JogSpeed;
 
 				string cmd = SupportJogging ? "$J=G91X{1}Y{0}F{2}" : "G0X{1}Y{0}F{2}";
+                System.Globalization.CultureInfo dotSeparated = System.Globalization.CultureInfo.InvariantCulture;
 
 				if (dir == JogDirection.N)
-					cmd = string.Format(cmd, size, 0, speed);
+					cmd = string.Format(dotSeparated, cmd, size, 0, speed);
 				else if (dir == JogDirection.S)
-					cmd = string.Format(cmd, -size, 0, speed);
+					cmd = string.Format(dotSeparated, cmd, -size, 0, speed);
 				else if (dir == JogDirection.W)
-					cmd = string.Format(cmd, 0, -size, speed);
+					cmd = string.Format(dotSeparated, cmd, 0, -size, speed);
 				else if (dir == JogDirection.E)
-					cmd = string.Format(cmd, 0, size, speed);
+					cmd = string.Format(dotSeparated, cmd, 0, size, speed);
 				else if (dir == JogDirection.NE)
-					cmd = string.Format(cmd, size, size, speed);
+					cmd = string.Format(dotSeparated, cmd, size, size, speed);
 				else if (dir == JogDirection.NW)
-					cmd = string.Format(cmd, size, -size, speed);
+					cmd = string.Format(dotSeparated, cmd, size, -size, speed);
 				else if (dir == JogDirection.SE)
-					cmd = string.Format(cmd, -size, size, speed);
+					cmd = string.Format(dotSeparated, cmd, -size, size, speed);
 				else if (dir == JogDirection.SW)
-					cmd = string.Format(cmd, -size, -size, speed);
+					cmd = string.Format(dotSeparated, cmd, -size, -size, speed);
 
 				if (!SupportJogging)
 					EnqueueCommand(new GrblCommand("G91"));
@@ -1754,7 +1755,7 @@ namespace LaserGRBL
 
 		public int JogSpeed { get; set; }
 
-		public int JogStep { get; set; }
+		public decimal JogStep { get; set; }
 
 		public bool SuspendHK { get; set; }
 

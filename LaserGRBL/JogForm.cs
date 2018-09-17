@@ -20,7 +20,13 @@ namespace LaserGRBL
 			UpdateFMax_Tick(null, null);
 
 			TbSpeed.Value = Math.Min((int)Settings.GetObject("Jog Speed", 1000), TbSpeed.Maximum);
-			TbStep.Value = (int)Settings.GetObject("Jog Step", 10);
+
+            object jogStepDecimal = Settings.GetObject("Jog Step Float", null);
+            if (jogStepDecimal != null)
+                TbStep.Value = JogStepToTrackbar((decimal)jogStepDecimal);
+            else
+                // backwards compatibility
+                TbStep.Value = JogStepToTrackbar((int)Settings.GetObject("Jog Step", 10));
 
 			TbSpeed_ValueChanged(null, null); //set tooltip
 			TbStep_ValueChanged(null, null); //set tooltip
@@ -42,10 +48,13 @@ namespace LaserGRBL
 
 		private void TbStep_ValueChanged(object sender, EventArgs e)
 		{
-			TT.SetToolTip(TbStep, string.Format("Step: {0}", TbStep.Value));
-			LblStep.Text = TbStep.Value.ToString();
-			Settings.SetObject("Jog Step", TbStep.Value);
-			Core.JogStep = TbStep.Value;
+            decimal newValue = TrackbarToJogStep(TbStep.Value);
+            string displayValue = newValue.ToString("0.#");
+
+            TT.SetToolTip(TbStep, string.Format("Step: {0}", displayValue));
+			LblStep.Text = displayValue;
+			Settings.SetObject("Jog Step Float", newValue);
+			Core.JogStep = newValue;
 			needsave = true;
 		}
 
@@ -77,6 +86,23 @@ namespace LaserGRBL
 				oldVal = curVal;
 			}
 		}
+
+
+        // Trackbar is still an integer value, so the first 9 values will be 0.1 to 0.9,
+        // 10 and above will be 1 to 200
+        private int JogStepToTrackbar(decimal stepValue)
+        {
+            return stepValue < 1
+              ? (int)Math.Truncate(stepValue * 10)
+              : (int)Math.Truncate(stepValue) + 9;
+        }
+
+        private decimal TrackbarToJogStep(int trackbarValue)
+        {
+            return trackbarValue <= 10
+                ? (decimal)trackbarValue / 10
+                : trackbarValue - 9;
+        }
 	}
 
 	public class DirectionButton : UserControls.ImageButton
