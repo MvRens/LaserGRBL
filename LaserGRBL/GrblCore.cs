@@ -59,7 +59,7 @@ namespace LaserGRBL
 		{ Unknown, Disconnected, Connecting, Idle, Run, Hold, Door, Home, Alarm, Check, Jog, Queue }
 
 		public enum JogDirection
-		{ N, S, W, E, NW, NE, SW, SE }
+		{ N, S, W, E, NW, NE, SW, SE, ZUp, ZDown }
 
 		public enum StreamingMode
 		{ Buffered, Synchronous, RepeatOnError }
@@ -1001,6 +1001,7 @@ namespace LaserGRBL
 				decimal speed = JogSpeed;
 
 				string cmd = SupportJogging ? "$J=G91X{1}Y{0}F{2}" : "G0X{1}Y{0}F{2}";
+                string cmdZ = SupportJogging ? "$J=G91Z{0}F{1}" : "G0Z{0}F{1}";
                 System.Globalization.CultureInfo dotSeparated = System.Globalization.CultureInfo.InvariantCulture;
 
 				if (dir == JogDirection.N)
@@ -1019,6 +1020,10 @@ namespace LaserGRBL
 					cmd = string.Format(dotSeparated, cmd, -size, size, speed);
 				else if (dir == JogDirection.SW)
 					cmd = string.Format(dotSeparated, cmd, -size, -size, speed);
+                else if (dir == JogDirection.ZUp)
+                    cmd = string.Format(dotSeparated, cmdZ, size, speed);
+                else if (dir == JogDirection.ZDown)
+                    cmd = string.Format(dotSeparated, cmdZ, -size, speed);
 
 				if (!SupportJogging)
 					EnqueueCommand(new GrblCommand("G91"));

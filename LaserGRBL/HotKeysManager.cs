@@ -20,7 +20,7 @@ namespace LaserGRBL
 				OpenFile = 20, ReopenLastFile = 21, SaveFile = 22, ExecuteFile = 23, AbortFile = 24,
 				HelpOnline = 30,
 				Reset = 100, Homing = 101, Unlock = 102,  PauseJob = 103, ResumeJob = 104, SetNewZero = 105,
-				JogHome = 1000, JogN = 1001, JogNE = 1002, JogE = 1003, JogSE = 1004, JogS = 1005, JogSW = 1006, JogW = 1007, JogNW = 1008, JogStepOneTenth = 1009, JogStepOne = 1010, JogStepTen = 1011,
+				JogHome = 1000, JogN = 1001, JogNE = 1002, JogE = 1003, JogSE = 1004, JogS = 1005, JogSW = 1006, JogW = 1007, JogNW = 1008, JogStepOneTenth = 1009, JogStepOne = 1010, JogStepTen = 1011, JogZUp = 1012, JogZDown = 1013,
 				OverridePowerDefault = 1100, OverridePowerUp = 1101, OverridePowerDown = 1102,
 				OverrideLinearDefault = 1110, OverrideLinearUp = 1111, OverrideLinearDown = 1112,
 				OverrideRapidDefault = 1120, OverrideRapidUp = 1121, OverrideRapidDown = 1122,
@@ -116,6 +116,8 @@ namespace LaserGRBL
 			AddNew(new HotKey(HotKey.Actions.JogSW, Keys.NumPad1));
 			AddNew(new HotKey(HotKey.Actions.JogW, Keys.NumPad4));
 			AddNew(new HotKey(HotKey.Actions.JogNW, Keys.NumPad7));
+            AddNew(new HotKey(HotKey.Actions.JogZUp, Keys.None));
+            AddNew(new HotKey(HotKey.Actions.JogZDown, Keys.None));
 
             AddNew(new HotKey(HotKey.Actions.JogStepOneTenth, Keys.None));
             AddNew(new HotKey(HotKey.Actions.JogStepOne, Keys.None));
@@ -234,6 +236,10 @@ namespace LaserGRBL
 					mCore.Jog(GrblCore.JogDirection.W); break;
 				case HotKey.Actions.JogNW:
 					mCore.Jog(GrblCore.JogDirection.NW); break;
+                case HotKey.Actions.JogZUp:
+                    mCore.Jog(GrblCore.JogDirection.ZUp); break;
+                case HotKey.Actions.JogZDown:
+                    mCore.Jog(GrblCore.JogDirection.ZDown); break;
                 case HotKey.Actions.JogStepOneTenth:
                     mCore.JogStep = 0.1M; break;
                 case HotKey.Actions.JogStepOne:
