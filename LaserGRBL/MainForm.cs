@@ -22,8 +22,8 @@ namespace LaserGRBL
 			if (System.Threading.Thread.CurrentThread.Name == null)
 				System.Threading.Thread.CurrentThread.Name = "Main Thread";
 			
-			using (SplashScreenForm f = new SplashScreenForm())
-				f.ShowDialog();
+			//using (SplashScreenForm f = new SplashScreenForm())
+			//	f.ShowDialog();
 
 			//build main communication object
 			Core = new GrblCore(this);
